@@ -1,0 +1,12 @@
+#!/bin/sh
+# Chromium-based browser (Brave, Chromium, Chrome) with the patched driver.
+# Pick the browser with BROWSER=/usr/bin/brave-browser-stable (default: chromium).
+B=${BROWSER:-/usr/bin/chromium}
+for d in /usr/lib/x86_64-linux-gnu/dri /usr/lib64/dri /usr/lib/dri; do
+  if [ -f $d/nouveaupatched_drv_video.so ]; then
+    export LIBVA_DRIVER_NAME=nouveaupatched
+    exec "$B" --ignore-gpu-blocklist \
+      --enable-features=AcceleratedVideoDecodeLinuxGL,VaapiIgnoreDriverChecks,VaapiOnNvidiaGPUs "$@"
+  fi
+done
+exec "$B" "$@"

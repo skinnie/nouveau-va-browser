@@ -1,0 +1,8 @@
+#!/bin/sh
+# Firefox with the patched driver. Also set in about:config:
+#   media.hardware-video-decoding.force-enabled = true
+#   media.ffmpeg.vaapi.enabled = true
+for d in /usr/lib/x86_64-linux-gnu/dri /usr/lib64/dri /usr/lib/dri; do
+  [ -f $d/nouveaupatched_drv_video.so ] && export LIBVA_DRIVER_NAME=nouveaupatched && break
+done
+exec ${FIREFOX:-/usr/bin/firefox} "$@"
